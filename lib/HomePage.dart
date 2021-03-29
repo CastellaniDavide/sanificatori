@@ -11,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _index = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,26 +22,43 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            Text("Email: " + widget.email),
-            Text("Password: " + widget.pws),
-            Container(
-              height: 80,
-              width: 150,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(10)),
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Welcome',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
-              ),
-            ),
+            Text(getString(_index)),
           ],
         )
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _index,
+        onTap: _test,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: "Account",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: "Recenti",
+          ),
+        ],
+      ),
     );
+  }
+
+  void _test(int i) {
+    print(i);
+    setState(() {
+      _index = i;
+    });
+  }
+
+  String getString(int i)
+  {
+    switch(i)
+    {
+      case 0:
+        return "Account\n" + widget.email;
+      case 1:
+        return "History\n" + "empty";
+    }
+    return "";
   }
 }

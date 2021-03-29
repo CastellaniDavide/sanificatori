@@ -34,9 +34,21 @@ class _LoginDemoState extends State<LoginDemo> {
   {
     return FlatButton(
       onPressed: () {
-        print(_emailController.text);
-        print(_pwsController.text);
-        Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage(email: _emailController.text, pws: _pwsController.text)));
+        if (_emailController.text =="" || _pwsController.text == "")
+        {
+          print("Error, you need to insert a value");
+        }
+        else
+        {
+          if (_emailController.text == "test@test.com" || _pwsController.text == "1234")
+          {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage(email: _emailController.text, pws: _pwsController.text)));
+          }
+          else
+          {
+            print("Error, wrong email or password");
+          }
+        }
       },
       child: Text(
         'Login',
@@ -92,15 +104,6 @@ class _LoginDemoState extends State<LoginDemo> {
                     hintText: 'Enter secure password'),
               ),
             ),
-            FlatButton(
-              onPressed: (){
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
-              },
-              child: Text(
-                'Forgot Password',
-                style: TextStyle(color: Colors.blue, fontSize: 15),
-              ),
-            ),
             Container(
               height: 50,
               width: 250,
@@ -115,6 +118,7 @@ class _LoginDemoState extends State<LoginDemo> {
           ],
         ),
       ),
+      //floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: _test,), // Singolo bottone
     );
   }
 }
