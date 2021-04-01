@@ -1,4 +1,4 @@
-#Mon Mar 29 16:12:20 CEST 2021
+#Thu Apr 01 09:41:36 CEST 2021
 base.0=/home/castellanidavide/AndroidStudioProjects/sanificatori/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
