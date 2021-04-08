@@ -8,8 +8,11 @@ class Device extends StatefulWidget {
 class _DeviceState extends State<Device> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Text("Device")
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Device"),
+        ),
+        body: Text("Device")
     );
   }
 }
