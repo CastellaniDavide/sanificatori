@@ -23,10 +23,10 @@ class _SearchingState extends State<Searching> {
     );
   }
 
-  Widget _buildRow(String name, String address, int i) {
+  Widget _buildRow(String _name, String _address, int _i) {
     return ListTile(
-      title: Text(name),
-      subtitle: Text(address),
+      title: Text(_name),
+      subtitle: Text(_address),
       trailing: (
           RaisedButton(
             shape: RoundedRectangleBorder(
@@ -34,12 +34,12 @@ class _SearchingState extends State<Searching> {
             color: Colors.grey,
             child: Text("Connect"),
             onPressed: (){
-              _onPressed(i);
+              _onPressed(_i);
             },
           )
       ),
       onTap: (){
-        _onPressed(i);
+        _onPressed(_i);
       },
     );
   }
