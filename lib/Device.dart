@@ -12,7 +12,11 @@ class _DeviceState extends State<Device> {
         appBar: AppBar(
           title: Text("Device"),
         ),
-        body: Text("Device")
-    );
+        body: Text("Device"));
   }
+
+  /*Future<BTDevice> getDevice() async {
+    var prefs = await SharedPreferences.getInstance();
+    BTDevice.fromJson(jsonDecode(prefs.getString("pref_device")));
+  }*/
 }
