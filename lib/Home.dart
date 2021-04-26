@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
 
     global.quickActions.initialize((String shortcutType) {
       setState(() {
-        if (shortcutType != null) {
+        if (shortcutType == "action") {
           _index = 1;
         }
       });

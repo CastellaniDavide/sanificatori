@@ -1,10 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:quick_actions/quick_actions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'global.dart' as global;
+import 'package:sanificatori/global.dart' as global;
 
 class Searching extends StatefulWidget {
   @override
@@ -22,6 +19,10 @@ class BTDevice {
   }
 
   get name => _name;
+
+  set name(value) {
+    _name = value;
+  }
 
   get MAC => _MAC;
 
@@ -100,18 +101,10 @@ class _SearchingState extends State<Searching> {
     });
 
     if (device.connected) {
-      var prefs = await SharedPreferences.getInstance();
-      await prefs.setString("pref_device", device.toJson().toString());
+      global.sDevice(device);
     }
 
-    global.quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(
-          type: 'action',
-          localizedTitle: "BTDevice" /*+ device.name*/,
-          icon: 'ic_launcher'),
-    ]).then((value) {
-      setState(() {});
-    });
+    global.changeAction(device.name);
   }
 
   List<BTDevice> _createDevicesList() {
