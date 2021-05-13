@@ -1,81 +1,36 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:sanificatori/global.dart' as global;
+import 'package:sanificatori/model/BTDevice.dart';
+import 'package:sanificatori/viewmodel/SearchingViewModel.dart';
+import 'package:stacked/stacked.dart';
 
 class Searching extends StatefulWidget {
   @override
   _SearchingState createState() => _SearchingState();
 }
 
-class BTDevice {
-  var _name;
-  var _MAC;
-  var _connected;
-
-  BTDevice(this._name) {
-    _connected = false;
-    _MAC = _getRandomAddress();
-  }
-
-  get name => _name;
-
-  set name(value) {
-    _name = value;
-  }
-
-  get MAC => _MAC;
-
-  get connected => _connected;
-
-  set connected(value) {
-    _connected = value;
-  }
-
-  String _getRandomAddress() {
-    Random random = new Random();
-    String string = "";
-    for (int i = 0; i < 6; ++i)
-      string +=
-          random.nextInt(256).toRadixString(16).padLeft(2, '0').toUpperCase() +
-              (i != 5 ? ":" : "");
-
-    return string;
-  }
-
-  BTDevice.fromJson(Map<String, dynamic> json)
-      : _name = json['name'],
-        _MAC = json['mac'];
-
-  Map<String, dynamic> toJson() => {
-        'name': _name,
-        'mac': _MAC,
-      };
-}
-
 class _SearchingState extends State<Searching> {
-  List<BTDevice> _devices = List<BTDevice>.generate(
-      10, (index) => BTDevice("Device #${(new Random()).nextInt(1000)}"));
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Scan for Bluetooth devices"),
+    return ViewModelBuilder<SearchingViewModel>.reactive(
+      builder: (context, viewModel, child) => Scaffold(
+        appBar: AppBar(
+          title: Text("Scan for Bluetooth devices"),
+        ),
+        body: new RefreshIndicator(
+          child: new ListView.builder(
+              padding: EdgeInsets.all(16.0),
+              itemCount: viewModel.devices.length,
+              itemBuilder: (context, i) {
+                return _buildRow(viewModel.devices[i], viewModel);
+              }),
+          onRefresh: viewModel.scanDevices,
+        ),
       ),
-      body: new RefreshIndicator(
-        child: new ListView.builder(
-            padding: EdgeInsets.all(16.0),
-            itemCount: _devices.length,
-            itemBuilder: (context, i) {
-              return _buildRow(_devices[i]);
-            }),
-        onRefresh: _handleRefresh,
-      ),
+      viewModelBuilder: () => SearchingViewModel(),
     );
   }
 
-  Widget _buildRow(BTDevice device) {
+  Widget _buildRow(BTDevice device, SearchingViewModel viewModel) {
     return ListTile(
       title: Text(device.name),
       subtitle: Text(device.MAC),
@@ -85,42 +40,12 @@ class _SearchingState extends State<Searching> {
         color: Colors.grey,
         child: Text(device.connected ? "Disconnect" : "Connect"),
         onPressed: () {
-          _onPressed(device);
+          viewModel.connectToDevice(device);
         },
       )),
       onTap: () {
-        _onPressed(device);
+        viewModel.connectToDevice(device);
       },
     );
-  }
-
-  void _onPressed(BTDevice device) async {
-    setState(() {
-      device.connected = !device.connected;
-      print("Pressed: " + device.name);
-    });
-
-    if (device.connected) {
-      global.sDevice(device);
-    }
-
-    global.changeAction(device.name);
-  }
-
-  List<BTDevice> _createDevicesList() {
-    return List<BTDevice>.generate(
-        10, (index) => BTDevice("Device #${(new Random()).nextInt(1000)}"));
-  }
-
-  Future<void> _handleRefresh() async {
-    setState(() {
-      _devices.clear();
-    });
-
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      _devices = _createDevicesList();
-    });
   }
 }

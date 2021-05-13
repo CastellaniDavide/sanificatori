@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:quick_actions/quick_actions.dart';
+import 'package:sanificatori/model/BTDevice.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Searching.dart';
 
 // set default values for the initial run
 QuickActions quickActions = QuickActions();
