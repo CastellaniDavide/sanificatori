@@ -17,19 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  /*@override
-  void initState() {
-    super.initState();
-
-    global.quickActions.initialize((String shortcutType) {
-      setState(() {
-        if (shortcutType == "action") {
-          _index = 1;
-        }
-      });
-    });
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
@@ -53,6 +40,9 @@ class _HomeState extends State<Home> {
       viewModelBuilder: () => HomeViewModel(),
       disposeViewModel: false,
       initialiseSpecialViewModelsOnce: true,
+      onModelReady: (viewModel) {
+        viewModel.init();
+      },
     );
   }
 

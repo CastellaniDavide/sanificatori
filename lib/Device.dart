@@ -8,25 +8,32 @@ class Device extends StatefulWidget {
 }
 
 class _DeviceState extends State<Device> {
+  TextEditingController textEditingController =
+      new TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DeviceViewModel>.reactive(
       builder: (context, viewModel, child) {
-        viewModel.getDevice();
-
         return Scaffold(
             appBar: AppBar(
               title: Text("Device"),
             ),
             body: Column(
               children: <Widget>[
-                TextField(controller: viewModel.textEditingController),
+                TextField(controller: textEditingController),
                 TextButton(
-                    onPressed: viewModel.saveDevice(), child: Text("Salva")),
+                    onPressed: () {
+                      viewModel.saveDevice(textEditingController.text);
+                    },
+                    child: Text("Salva")),
               ],
             ));
       },
       viewModelBuilder: () => DeviceViewModel(),
+      onModelReady: (viewModel) async {
+        textEditingController.text = await viewModel.getDevice();
+      },
     );
   }
 }
